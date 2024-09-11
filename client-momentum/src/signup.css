@@ -1,0 +1,121 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+}
+
+.register-form {
+  width: 100%;
+  max-width: 1200px; /* Limit form width */
+  margin-top: 2rem;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.fa-square-xmark {
+  color: #b32456;
+  font-size: 1.5rem;
+}
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.9rem;
+}
+
+.left,
+.right {
+  width: 50%;
+}
+
+.label p {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.inputbox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 7rem;
+}
+
+.phone {
+  width: 100%;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.emailinput,
+.phoneinput {
+  width: 60%;
+  color: #797975;
+}
+
+.right {
+  margin-left: 2rem;
+  margin-top: 2rem;
+}
+
+.email {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+.buttons p {
+  font-size: 1rem;
+  color: #b32456;
+}
+.buttons p a {
+  color: #ffc107;
+  text-decoration: underline solid #ffc107 5px;
+  font-weight: 700;
+}
+
+.buttons p a:hover {
+  color: #b32456;
+  text-decoration: underline solid #b32456 5px;
+}
+
+.add {
+  padding: 0.5rem 2rem;
+  background: #b32456;
+  border-radius: 29px;
+  color: #ffffff;
+  border: none;
+  font-weight: bold;
+}
+
+.photo {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.photo img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+}
