@@ -5,6 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import ResumeModal from "./ResumeModal";
+import "./Application.css";
 
 const MyApplications = () => {
   const { user } = useContext(Context);
@@ -73,7 +74,7 @@ const MyApplications = () => {
     <section className="my_applications page">
       {user && user.role === "Job Seeker" ? (
         <div className="container">
-          <h1>My Applications</h1>
+          <h3>My Applications</h3>
           {applications.length <= 0 ? (
             <>
               <h4>No Applications Found</h4>{" "}

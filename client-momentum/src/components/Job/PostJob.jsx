@@ -14,6 +14,8 @@ const PostJob = () => {
   const [salaryTo, setSalaryTo] = useState("");
   const [fixedSalary, setFixedSalary] = useState("");
   const [salaryType, setSalaryType] = useState("default");
+  const [companyName, setcompanyName] = useState("");
+  const [companyDescription, setcompanyDescription] = useState("default");
 
   const { isAuthorized, user } = useContext(Context);
 
@@ -35,6 +37,8 @@ const PostJob = () => {
         fixedSalary.length >= 4
           ? {
               title,
+              companyName,
+              companyDescription,
               description,
               category,
               country,
@@ -43,6 +47,8 @@ const PostJob = () => {
               fixedSalary,
             }
           : {
+              companyName,
+              companyDescription,
               title,
               description,
               category,
@@ -96,6 +102,8 @@ const PostJob = () => {
                 <option value="Mobile App Development">
                   Mobile App Development
                 </option>
+                <option value="Marketing">Marketing</option>
+                <option value="UI/UX DESIGN">UI/UX DESIGN</option>
                 <option value="Frontend Web Development">
                   Frontend Web Development
                 </option>
@@ -124,6 +132,7 @@ const PostJob = () => {
                 onChange={(e) => setCountry(e.target.value)}
                 placeholder="Country"
               />
+
               <label>City</label>
               <input
                 type="text"
@@ -183,6 +192,20 @@ const PostJob = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Job Description"
+            />
+            <label htmlFor="">About Organization</label>
+            <textarea
+              type="text"
+              value={companyDescription}
+              onChange={(e) => setcompanyDescription(e.target.value)}
+              placeholder="About Your Organization "
+            />
+            <label htmlFor="">Organization</label>
+            <input
+              type="text"
+              value={companyName}
+              onChange={(e) => setcompanyName(e.target.value)}
+              placeholder="Your Organization Name"
             />
             <button type="submit">Create Job</button>
           </form>

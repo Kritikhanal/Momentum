@@ -1,23 +1,36 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Context } from "../../index";
+
+import "./signup.css";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [bio, setBio] = useState("");
   const [role, setRole] = useState("");
-  const { isAuthorized, setIsAuthorized } = useContext(Context);
+  const [companyValues, setCompanyValues] = useState("");
+  const [companyAchievements, setCompanyAchievements] = useState("");
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
         "http://localhost:4000/api/v1/user/register",
-        { name, phone, email, role, password },
+        {
+          name,
+          phone,
+          email,
+          role,
+          password,
+          companyValues,
+          companyAchievements,
+          bio,
+        },
         {
           headers: {
             "Content-Type": "application/json",
@@ -26,19 +39,22 @@ const SignUp = () => {
         }
       );
       toast.success(data.message);
+
       setName("");
       setEmail("");
       setPassword("");
       setPhone("");
       setRole("");
-      setIsAuthorized(true);
+      setCompanyValues("");
+      setCompanyAchievements("");
+      setBio("");
+      setRedirectToLogin(true);
     } catch (error) {
       toast.error(error.response.data.message);
     }
   };
-
-  if (isAuthorized) {
-    return <Navigate to={"/"} />;
+  if (redirectToLogin) {
+    return <Navigate to="/login" />;
   }
 
   return (
@@ -88,6 +104,20 @@ const SignUp = () => {
                 onChange={(e) => setPhone(e.target.value)}
               />
             </section>
+            {role === "Employer" && (
+              <section className="phone">
+                <section className="label">
+                  <p>Company Achievements and Awards</p>
+                </section>
+                <textarea
+                  type="text"
+                  className="phoneinput"
+                  placeholder="List your company's achievements and awards"
+                  value={companyAchievements}
+                  onChange={(e) => setCompanyAchievements(e.target.value)}
+                />
+              </section>
+            )}
           </section>
           {/* right section */}
           <section className="right">
@@ -104,7 +134,7 @@ const SignUp = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </section>
-            {/* phone number input */}
+            {/* password input */}
             <section className="phone">
               <section className="label">
                 <p>Password</p>
@@ -116,6 +146,35 @@ const SignUp = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </section>
+            {/* bio input */}
+            <section className="phone">
+              <section className="label">
+                <p>Bio</p>
+              </section>
+              <textarea
+                type="text"
+                className="phoneinput"
+                placeholder="Write a short intro to be displayed on your profile"
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+              />
+            </section>
+            {role === "Employer" && (
+              <>
+                <section className="phone">
+                  <section className="label">
+                    <p>Company Values and Mission</p>
+                  </section>
+                  <textarea
+                    type="text"
+                    className="phoneinput"
+                    placeholder="Describe your company's values and mission"
+                    value={companyValues}
+                    onChange={(e) => setCompanyValues(e.target.value)}
+                  />
+                </section>
+              </>
+            )}
           </section>
         </section>
 

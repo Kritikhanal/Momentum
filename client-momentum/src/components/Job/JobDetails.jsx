@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Context } from "../../index"
+import { Context } from "../../index";
 const JobDetails = () => {
   const { id } = useParams();
   const [job, setJob] = useState({});
@@ -36,6 +36,7 @@ const JobDetails = () => {
           <p>
             Title: <span> {job.title}</span>
           </p>
+
           <p>
             Category: <span>{job.category}</span>
           </p>

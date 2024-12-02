@@ -1,9 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { Context } from "../../index";
+import Tabs from "@mui/joy/Tabs";
+import Breadcrumbs from "@mui/joy/Breadcrumbs";
+import Link from "@mui/joy/Link";
+import TabList from "@mui/joy/TabList";
+import Tab, { tabClasses } from "@mui/joy/Tab";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import {
   Box,
   Typography,
-  Tabs,
-  Tab,
   Stack,
   Card,
   Divider,
@@ -13,192 +21,282 @@ import {
   FormLabel,
   Input,
   Textarea,
-  FormHelperText,
-  CardOverflow,
   CardActions,
   Select,
   Option,
-  AspectRatio,
+  Avatar,
+  Modal,
 } from "@mui/joy";
 import {
-  LocationCity,
   EditRounded as EditRoundedIcon,
   EmailRounded as EmailRoundedIcon,
-  AccessTimeFilledRounded as AccessTimeFilledRoundedIcon,
-  InsertDriveFileRounded as InsertDriveFileRoundedIcon,
-  VideocamRounded as VideocamRoundedIcon,
+  Close as CloseIcon, // Import the Close icon
 } from "@mui/icons-material";
-import TabList from "@mui/joy/TabList";
-import { tabClasses } from "@mui/joy/Tab";
-import DropZone from "./DropZone";
-import FileUpload from "./FileUpload";
-import { Context } from "../../index";
+import Application from "../Application/MyApplications";
 
 export default function MyProfile() {
   const { isAuthorized, user } = useContext(Context);
+  const [profileImage, setProfileImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(
+    user?.profilePicture?.url || "default-image-url"
+  );
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    address: "",
+    role: "",
+    timezone: "1",
+    bio: "",
+    values: "",
+    achievements: "",
+    profilePicture: "",
+  });
+  const [isEditing, setIsEditing] = useState(false);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
+  const [isSaveEnabled, setIsSaveEnabled] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || "",
+        email: user.email || "",
+        address: user.address || "",
+        role: user.role || "",
+        timezone: user.timezone || "1",
+        bio: user.bio || "",
+        values: user.values || "",
+        achievements: user.achievements || "",
+      });
+      if (user.profilePicture) {
+        setPreviewImage(user.profilePicture?.url || "default-image-url");
+      }
+    }
+  }, [user]);
 
   if (!isAuthorized || !user) return null;
 
   const isEmployer = user.role === "Employer";
 
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setProfileImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+      setIsSaveEnabled(true); // Enable the Save button
+    }
+  };
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSaveProfile = async () => {
+    if (!profileImage) return;
+
+    const formData = new FormData();
+    formData.append("profilePicture", profileImage);
+
+    try {
+      const { data } = await axios.put(
+        "http://localhost:4000/api/v1/user/updateprofile",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        }
+      );
+      toast.success(data.message);
+
+      setPreviewImage(data.profilePicture?.url || "default-image-url");
+      setIsSaveEnabled(false);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Error saving profile picture"
+      );
+    }
+  };
+
   return (
     <Box sx={{ flex: 1, width: "100%" }}>
-      <Box
-        sx={{
-          position: "sticky",
-          top: { sm: -100, md: -110 },
-          bgcolor: "background.body",
-          zIndex: 9995,
-        }}
-      >
-        <Box sx={{ px: { xs: 2, md: 6 } }}>
-          <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-            {isEmployer ? "Company profile" : "My profile"}
-          </Typography>
-        </Box>
-        <Tabs defaultValue={0} sx={{ bgcolor: "transparent" }}>
-          <TabList
-            tabFlex={1}
-            size="sm"
-            sx={{
-              pl: { xs: 0, md: 4 },
-              justifyContent: "left",
-              [`&& .${tabClasses.root}`]: {
-                fontWeight: "600",
-                flex: "initial",
-                color: "text.tertiary",
-                [`&.${tabClasses.selected}`]: {
-                  bgcolor: "transparent",
-                  color: "text.primary",
-                  "&::after": {
-                    height: "2px",
-                    bgcolor: "primary.500",
+      <Box sx={{ flex: 1, width: "100%" }}>
+        <Box
+          sx={{
+            top: { sm: -100, md: -110 },
+            bgcolor: "background.body",
+            zIndex: 9995,
+          }}
+        >
+          <Box sx={{ px: { xs: 2, md: 6 } }}>
+            <Breadcrumbs
+              size="sm"
+              aria-label="breadcrumbs"
+              separator={<ChevronRightRoundedIcon fontSize="sm" />}
+              sx={{ pl: 0 }}
+            >
+              <Link
+                underline="none"
+                color="neutral"
+                href="#some-link"
+                aria-label="Home"
+              >
+                <HomeRoundedIcon />
+              </Link>
+              <Link
+                underline="hover"
+                color="neutral"
+                href="#some-link"
+                sx={{ fontSize: 12, fontWeight: 500 }}
+              >
+                Users
+              </Link>
+              <Typography
+                color="primary"
+                sx={{ fontWeight: 500, fontSize: 12 }}
+              >
+                My profile
+              </Typography>
+            </Breadcrumbs>
+            <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
+              My profile
+            </Typography>
+          </Box>
+          <Tabs
+            value={activeTab}
+            onChange={(e, newValue) => setActiveTab(newValue)}
+            sx={{ bgcolor: "transparent" }}
+          >
+            <TabList
+              tabFlex={1}
+              size="sm"
+              sx={{
+                pl: { xs: 0, md: 4 },
+                justifyContent: "left",
+                [`&& .${tabClasses.root}`]: {
+                  fontWeight: "600",
+                  flex: "initial",
+                  color: "text.tertiary",
+                  [`&.${tabClasses.selected}`]: {
+                    bgcolor: "transparent",
+                    color: "text.primary",
+                    "&::after": {
+                      height: "2px",
+                      bgcolor: "primary.500",
+                    },
                   },
                 },
-              },
-            }}
-          >
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={0}>
-              {isEmployer ? "Company info" : "Personal info"}
-            </Tab>
-
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={0}>
-              {isEmployer ? "Career Opportunities" : "Experience"}
-            </Tab>
-
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={0}>
-              {isEmployer ? "Company Events and Activities" : "Education"}
-            </Tab>
-
-            {!isEmployer && (
+              }}
+            >
+              <Tab
+                sx={{ borderRadius: "6px 6px 0 0" }}
+                indicatorInset
+                value={0}
+              >
+                Personal Info
+              </Tab>
+              <Tab
+                sx={{ borderRadius: "6px 6px 0 0" }}
+                indicatorInset
+                value={1}
+              >
+                My Applications
+              </Tab>
+              <Tab
+                sx={{ borderRadius: "6px 6px 0 0" }}
+                indicatorInset
+                value={2}
+              >
+                {isEmployer ? "Achievement" : "Experience"}
+              </Tab>
               <Tab
                 sx={{ borderRadius: "6px 6px 0 0" }}
                 indicatorInset
                 value={3}
               >
-                Skills
+                {isEmployer ? "Company Values" : "Education"}
               </Tab>
-            )}
-          </TabList>
-        </Tabs>
+            </TabList>
+          </Tabs>
+          {activeTab === 1 && <Application />}
+        </Box>
       </Box>
+
       <Stack
-        spacing={4}
         sx={{
           display: "flex",
-          maxWidth: "800px",
+          maxWidth: "1200px",
           mx: "auto",
-          px: { xs: 2, md: 6 },
-          py: { xs: 2, md: 3 },
+          px: { xs: 1, md: 1 },
+          py: { xs: 1, md: 1 },
         }}
       >
-        <Card>
-          <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">
-              {isEmployer ? "Company info" : "Personal info"}
-            </Typography>
+        {activeTab === 0 && (
+          <Card>
+            <Box sx={{ mb: 1 }}>
+              <Typography level="title-md">
+                {isEmployer ? "Company info" : "Personal info"}
+              </Typography>
 
-            <Typography level="body-sm">
-              Customize how your profile information will apper to the networks.
-            </Typography>
-          </Box>
-          <Divider />
-          <Stack
-            direction="row"
-            spacing={3}
-            sx={{ display: { xs: "none", md: "flex" }, my: 1 }}
-          >
-            <Stack direction="column" spacing={1}>
-              <AspectRatio
-                ratio="1"
-                maxHeight={200}
-                sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                  srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                  loading="lazy"
-                  alt=""
+              <Typography level="body-sm">
+                Customize how your profile information will appear.
+              </Typography>
+            </Box>
+            <Divider />
+
+            <Stack direction="row" spacing={3} sx={{ my: 1 }}>
+              <Stack direction="column" spacing={1}>
+                <Avatar
+                  alt="Profile"
+                  src={previewImage || "default-image-url"}
+                  sx={{ width: 150, height: 150 }}
                 />
-              </AspectRatio>
-              <IconButton
-                aria-label="upload new picture"
-                size="sm"
-                variant="outlined"
-                color="neutral"
-                sx={{
-                  bgcolor: "background.body",
-                  position: "absolute",
-                  zIndex: 2,
-                  borderRadius: "50%",
-                  left: 100,
-                  top: 170,
-                  boxShadow: "sm",
-                }}
-              >
-                <EditRoundedIcon />
-              </IconButton>
+                <IconButton
+                  aria-label="edit profile picture"
+                  size="sm"
+                  variant="outlined"
+                  color="neutral"
+                  sx={{
+                    bgcolor: "background.body",
+                    position: "absolute",
+                    zIndex: 2,
+                    borderRadius: "100%",
+                    left: 130,
+                    top: 190,
+                    boxShadow: "sm",
+                  }}
+                  onClick={() => setIsImageModalOpen(true)}
+                >
+                  <EditRoundedIcon />
+                </IconButton>
+              </Stack>
             </Stack>
+
+            {/* ----------------- Editable Form Fields Section ---------------- */}
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
               <Stack spacing={1}>
                 <FormLabel>{isEmployer ? "Company Name" : "Name"}</FormLabel>
-                <FormControl
-                  sx={{
-                    display: { sm: "flex-column", md: "flex-row" },
-                    gap: 2,
-                  }}
-                >
-                  <Input
-                    size="sm"
-                    placeholder={isEmployer ? "Company Name" : "First name"}
-                  />
-
-                  {!isEmployer && (
-                    <Input
-                      size="sm"
-                      placeholder="Last name"
-                      sx={{ flexGrow: 1 }}
-                    />
-                  )}
-                </FormControl>
+                <Input
+                  size="sm"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleFormChange}
+                  placeholder={isEmployer ? "Company Name" : "First name"}
+                  disabled={!isEditing}
+                />
               </Stack>
 
               <Stack direction="row" spacing={2}>
                 {!isEmployer && (
                   <FormControl>
                     <FormLabel>Role</FormLabel>
-                    <Input size="sm" defaultValue="UI Developer" />
-                  </FormControl>
-                )}
-                {user && isEmployer && (
-                  <FormControl sx={{ flexGrow: 1 }}>
-                    <FormLabel>Company Address</FormLabel>
                     <Input
                       size="sm"
-                      type="text"
-                      startDecorator={<LocationCity />}
-                      placeholder="Company Address"
-                      sx={{ flexGrow: 1 }}
+                      name="role"
+                      value={formData.role}
+                      onChange={handleFormChange}
+                      disabled={!isEditing}
                     />
                   </FormControl>
                 )}
@@ -208,183 +306,123 @@ export default function MyProfile() {
                   <Input
                     size="sm"
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleFormChange}
                     startDecorator={<EmailRoundedIcon />}
                     placeholder="email"
-                    defaultValue="siriwatk@test.com"
-                    sx={{ flexGrow: 1 }}
+                    disabled={!isEditing}
                   />
                 </FormControl>
               </Stack>
 
-              <div>
-                {!isEmployer && (
-                  <FormControl sx={{ display: { sm: "contents" } }}>
-                    <FormLabel>Timezone</FormLabel>
-                    <Select
-                      size="sm"
-                      startDecorator={<AccessTimeFilledRoundedIcon />}
-                      defaultValue="1"
-                    >
-                      <Option value="1">
-                        Indochina Time (Bangkok){" "}
-                        <Typography textColor="text.tertiary" sx={{ ml: 0.5 }}>
-                          — GMT+07:00
-                        </Typography>
-                      </Option>
-                      <Option value="2">
-                        Indochina Time (Ho Chi Minh City){" "}
-                        <Typography textColor="text.tertiary" sx={{ ml: 0.5 }}>
-                          — GMT+07:00
-                        </Typography>
-                      </Option>
-                    </Select>
-                  </FormControl>
-                )}
-              </div>
-            </Stack>
-          </Stack>
-          <Stack
-            direction="column"
-            spacing={2}
-            sx={{ display: { xs: "flex", md: "none" }, my: 1 }}
-          >
-            <Stack direction="row" spacing={2}>
-              <Stack direction="column" spacing={1}>
-                <AspectRatio
-                  ratio="1"
-                  maxHeight={108}
-                  sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
-                >
-                  <img
-                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                    srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                    loading="lazy"
-                    alt=""
-                  />
-                </AspectRatio>
-                <IconButton
-                  aria-label="upload new picture"
-                  size="sm"
-                  variant="outlined"
-                  color="neutral"
-                  sx={{
-                    bgcolor: "background.body",
-                    position: "absolute",
-                    zIndex: 2,
-                    borderRadius: "50%",
-                    left: 85,
-                    top: 180,
-                    boxShadow: "sm",
-                  }}
-                >
-                  <EditRoundedIcon />
-                </IconButton>
-              </Stack>
-            </Stack>
-          </Stack>
-          <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
-            <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
-                Cancel
-              </Button>
-              <Button size="sm" variant="solid">
-                Save
-              </Button>
-            </CardActions>
-          </CardOverflow>
-        </Card>
-        <Card>
-          <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">
-              {isEmployer ? "Company Overview" : "Bio"}
-            </Typography>
+              {!isEmployer && (
+                <FormControl sx={{ display: "contents" }}>
+                  <FormLabel>Timezone</FormLabel>
+                  <Select
+                    size="sm"
+                    name="timezone"
+                    value={formData.timezone}
+                    onChange={handleFormChange}
+                    disabled={!isEditing}
+                  >
+                    <Option value="1">Indochina Time (Bangkok)</Option>
+                    <Option value="2">Hong Kong Time</Option>
+                    <Option value="3">Australian Central Time</Option>
+                  </Select>
+                </FormControl>
+              )}
 
-            <Typography level="body-sm">
-              Write a short introduction to be displayed on your profile
-            </Typography>
-          </Box>
-          <Divider />
-          <Stack spacing={1} sx={{ my: 1 }}>
-            <Typography level="body-sm">
-              {isEmployer ? "Company Values and Mission" : "About Yourself"}
-            </Typography>
-            <Textarea
-              size="sm"
-              minRows={3}
-              defaultValue={
-                isEmployer
-                  ? "We are a software development company based in Bangkok, Thailand. Our mission is to solve UI problems with neat CSS without using too much JavaScript."
-                  : "I'm a software developer based in Bangkok, Thailand. My goal is to solve UI problems with neat CSS without using too much JavaScript."
-              }
-            />
-            <FormHelperText sx={{ mt: 0.75, fontSize: "xs" }}>
-              275 characters left
-            </FormHelperText>
-          </Stack>
-          {isAuthorized && isEmployer && (
-            <Stack spacing={1} sx={{ my: 0.5 }}>
-              <Typography level="body-sm">
-                Company Achievements and Awards
-              </Typography>
-              <Textarea
-                size="sm"
-                minRows={3}
-                defaultValue="We have been awarded the Best UI Design Award in 2020 and 2021."
-              />
-              <FormHelperText sx={{ mt: 0.75, fontSize: "xs" }}>
-                275 characters left
-              </FormHelperText>
+              <FormControl sx={{ flexGrow: 1 }}>
+                <FormLabel>{isEmployer ? "Company Bio" : "Bio"}</FormLabel>
+                <Textarea
+                  minRows={4}
+                  size="sm"
+                  name="bio"
+                  value={formData.bio}
+                  onChange={handleFormChange}
+                  disabled={!isEditing}
+                />
+              </FormControl>
             </Stack>
-          )}
-          <CardOverflow sx={{ borderTop: "1px solid", borderColor: "divider" }}>
-            <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
-                Cancel
-              </Button>
-              <Button size="sm" variant="solid">
-                Save
-              </Button>
+
+            {/* ----------------- Actions (Edit/Save/Cancel) ---------------- */}
+            <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
+              {isEditing ? (
+                <>
+                  <Button
+                    size="sm"
+                    variant="plain"
+                    color="neutral"
+                    onClick={() => setIsEditing(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button size="sm" onClick={handleSaveProfile}>
+                    Save
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  size="sm"
+                  onClick={() => setIsEditing(true)}
+                  startDecorator={<EditRoundedIcon />}
+                >
+                  Edit Profile
+                </Button>
+              )}
             </CardActions>
-          </CardOverflow>
-        </Card>
-        {isAuthorized && !isEmployer && (
-          <Card>
-            <Box sx={{ mb: 1 }}>
-              <Typography level="title-md">Portfolio projects</Typography>
-              <Typography level="body-sm">
-                Share a few snippets of your work.
-              </Typography>
-            </Box>
-            <Divider />
-            <Stack spacing={2} sx={{ my: 1 }}>
-              <DropZone />
-              <FileUpload
-                icon={<InsertDriveFileRoundedIcon />}
-                fileName="Tech design requirements.pdf"
-                fileSize="200 kB"
-                progress={100}
-              />
-              <FileUpload
-                icon={<VideocamRoundedIcon />}
-                fileName="Dashboard prototype recording.mp4"
-                fileSize="16 MB"
-                progress={40}
-              />
-            </Stack>
-            <CardOverflow
-              sx={{ borderTop: "1px solid", borderColor: "divider" }}
-            >
-              <CardActions sx={{ alignSelf: "flex-end", pt: 2 }}>
-                <Button size="sm" variant="outlined" color="neutral">
-                  Cancel
-                </Button>
-                <Button size="sm" variant="solid">
-                  Save
-                </Button>
-              </CardActions>
-            </CardOverflow>
           </Card>
         )}
+        {/* ----------------- Profile Picture Section ---------------- */}
+
+        {/* ---------------- Modal to show image upload options ---------------- */}
+        <Modal
+          open={isImageModalOpen}
+          onClose={() => setIsImageModalOpen(false)}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Card
+            sx={{ position: "relative", textAlign: "center", width: 300, p: 3 }}
+          >
+            <IconButton
+              onClick={() => setIsImageModalOpen(false)}
+              sx={{
+                position: "absolute",
+                top: 8,
+                right: 8,
+                zIndex: 1,
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Avatar
+              src={previewImage || "default-image-url"}
+              alt="Profile"
+              sx={{ width: 150, height: 150, mx: "auto", mb: 2 }}
+            />
+            <Button component="label" variant="outlined" sx={{ mb: 2 }}>
+              Upload Picture
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </Button>
+            <Button
+              onClick={handleSaveProfile}
+              disabled={!isSaveEnabled}
+              variant="solid"
+            >
+              Save
+            </Button>
+          </Card>
+        </Modal>
       </Stack>
     </Box>
   );

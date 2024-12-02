@@ -1,0 +1,133 @@
+.authPage {
+  display: flex;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+  flex-wrap: wrap;
+}
+.authPage .container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #fff;
+  padding-left: 3rem;
+  margin-top: 0rem;
+  max-width: 100%;
+}
+.authPage .container .header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.authPage .container .header p {
+  font-size: 1rem;
+  color: rgb(166, 166, 166);
+}
+
+.authPage .container .header {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+.authPage .container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.authPage .container form .inputTag {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.authPage .container form .inputTag div {
+  display: flex;
+  align-items: center;
+  border-radius: 7px;
+}
+.authPage .container form .inputTag div input,
+.authPage .container form .inputTag div select {
+  background: #f1f3f6;
+  padding: 0.5rem;
+  border: none;
+  width: 100%;
+  height: 100%;
+}
+.authPage .container form .inputTag div input:focus,
+.authPage .container form .inputTag div select:focus {
+  outline: none;
+}
+.authPage .container form .inputTag div svg {
+  width: 10%;
+  font-size: 1.5rem;
+  background: #ffc107;
+  height: 100%;
+  padding: 8px;
+  color: #fff;
+}
+.authPage .container form button {
+  padding: 10px;
+  text-align: center;
+  border: none;
+  margin-top: 0;
+  font-weight: 700;
+  color: #fff;
+  background: #b32456;
+  font-size: 1.2rem;
+  border-radius: 7px;
+}
+.authPage .container form a {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #b32456;
+  margin-top: 0;
+  font-weight: 700;
+  color: #b32456;
+  font-size: 1.2rem;
+  text-decoration: none;
+  border-radius: 7px;
+}
+.authPage .banner {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: hidden;
+}
+.authPage .banner img {
+  max-width: 100%;
+  height: auto;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.8rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  margin-top: -5rem;
+}
+
+@media (max-width: 1520px) {
+  .authPage {
+    min-width: 100%;
+  }
+}
+@media (max-width: 830px) {
+  .authPage {
+    min-height: 100vh;
+    height: auto;
+    margin-top: 5rem;
+  }
+  .authPage .container {
+    flex: none;
+    width: 100%;
+    justify-content: flex-start;
+    padding: 40px 20px;
+  }
+  .authPage .banner {
+    flex: none;
+    display: none;
+  }
+}

@@ -4,6 +4,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Context } from "../../index";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { BiUser } from "react-icons/bi";
+
+import "./Navbar.css";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
@@ -13,16 +16,28 @@ const Navbar = () => {
 
   // On component mount, check if user data is stored in localStorage
   useEffect(() => {
+    console.log("useEffect triggered");
+
     const savedUser = localStorage.getItem("user");
     const savedIsAuthorized = localStorage.getItem("isAuthorized");
+    const token = localStorage.getItem("token");
 
-    if (savedUser && savedIsAuthorized) {
+    console.log("Saved User:", savedUser);
+    console.log("Saved IsAuthorized:", savedIsAuthorized);
+    console.log("Saved Token:", token);
+    if (savedUser && savedIsAuthorized && token) {
       setUser(JSON.parse(savedUser));
       setIsAuthorized(JSON.parse(savedIsAuthorized));
+      console.log("User is authenticated, restoring session...");
+    } else {
+      console.log("No valid session, logging out...");
+      handleLogout(); // If no valid session, force logout
     }
-  }, [setUser, setIsAuthorized]);
+  }, []);
 
   const handleLogout = async () => {
+    console.log("Logging out..."); // Debug log
+
     try {
       const response = await axios.get(
         "http://localhost:4000/api/v1/user/logout",
@@ -31,6 +46,7 @@ const Navbar = () => {
         }
       );
 
+      console.log("Logout Response:", response); // Debug log
       toast.success(response.data.message);
       setIsAuthorized(false);
       setUser(null);
@@ -38,10 +54,15 @@ const Navbar = () => {
       // Clear the localStorage
       localStorage.removeItem("user");
       localStorage.removeItem("isAuthorized");
+      localStorage.removeItem("token"); // Remove token if stored
+
+      // Verify that localStorage was cleared
+      console.log("LocalStorage after logout:", localStorage); // Debug log
 
       // Redirect to login page after logout
       navigate("/login");
     } catch (error) {
+      console.error("Logout Error:", error); // Debug log
       toast.error(error.response?.data?.message || "Logout failed");
       setIsAuthorized(true);
     }
@@ -50,7 +71,7 @@ const Navbar = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     // Perform search logic here using the searchKeyword state
-    console.log("Search keyword:", searchKeyword);
+    console.log("Search keyword:", searchKeyword); // Debug log
     // Reset search keyword
     setSearchKeyword("");
   };
@@ -67,24 +88,38 @@ const Navbar = () => {
               Home
             </Link>
           </li>
-          <li>
-            <Link to={"/aboutus"} onClick={() => setShow(false)}>
-              About Us
-            </Link>
-          </li>
+          {!isAuthorized && (
+            <li>
+              <Link to={"/aboutus"} onClick={() => setShow(false)}>
+                About Us
+              </Link>
+            </li>
+          )}
+
           <li>
             <Link to={"/job/getall"} onClick={() => setShow(false)}>
               All Jobs
             </Link>
           </li>
 
-          {/* Conditionally render 'My Applications' based on user's login status and role */}
-          {isAuthorized && user && user.role !== "Employer" && (
-            <li>
-              <Link to={"/applications/me"} onClick={() => setShow(true)}>
-                My Applications
-              </Link>
-            </li>
+          {isAuthorized && (
+            <>
+              <li>
+                <Link to={"/resume-scorer"} onClick={() => setShow(true)}>
+                  Resume Scorer
+                </Link>
+              </li>
+              <li>
+                <Link to={"/resume-builder"} onClick={() => setShow(true)}>
+                  Resume Builder
+                </Link>
+              </li>
+              <li>
+                <Link to={"/my-resumes"} onClick={() => setShow(true)}>
+                  My Resume
+                </Link>
+              </li>
+            </>
           )}
 
           {/* Conditionally render 'Post a Job' and 'View My Jobs' only if the user is an Employer */}
@@ -128,6 +163,15 @@ const Navbar = () => {
             <li>
               <Link to="/Login" className="btn">
                 Login
+              </Link>
+            </li>
+          )}
+
+          {/* Conditionally render user profile icon */}
+          {isAuthorized && (
+            <li>
+              <Link to="/user-dashboard" className="btn">
+                <BiUser />
               </Link>
             </li>
           )}

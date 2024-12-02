@@ -1,0 +1,507 @@
+.heroSection {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0 20px 0;
+}
+.heroSection .container,
+.heroSection .details {
+  min-width: 1500px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+.heroSection .container {
+  display: flex;
+  height: 450px;
+  margin-bottom: 1.75rem;
+}
+.heroSection .container .title,
+.heroSection .container .image {
+  flex: 1;
+}
+.heroSection .container .title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.heroSection .container .title h2 {
+  max-width: 750px;
+  color: #b32456;
+}
+.heroSection .container .title p {
+  margin-top: 1.5rem;
+  max-width: 600px;
+}
+.heroSection .container .image {
+  overflow: hidden;
+}
+.heroSection .container .image img {
+  width: 100%;
+  height: 100%;
+  margin-left: 1rem;
+}
+.heroSection .details {
+  display: flex;
+  justify-content: space-between;
+  padding: 50px 0;
+}
+.heroSection .details .card {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  background: #f1f3f6;
+  width: 220px;
+  padding: 10px 20px;
+}
+.heroSection .details .card .icon {
+  font-size: 24px;
+  background: #f9b314;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  color: #ffff;
+}
+.heroSection .details .card .content p:first-child {
+  font-weight: bold;
+}
+.heroSection .details .card .content p:nth-child(2) {
+  font-size: 14px;
+  color: gray;
+  margin-top: 5px;
+}
+.heroSection .details .card:hover {
+  transition: all 0.3s;
+  box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+  -webkit-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+  -moz-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+}
+@media (max-width: 1520px) {
+  .heroSection .container,
+  .heroSection .details {
+    min-width: 100%;
+    padding: 20px;
+  }
+}
+@media (max-width: 1000px) {
+  .heroSection .container {
+    flex-direction: column-reverse;
+    position: relative;
+    min-height: 600px;
+  }
+  .heroSection .container .title {
+    z-index: 1;
+    text-align: center;
+  }
+  .heroSection .container .title h1,
+  .heroSection .container .title p {
+    max-width: 100%;
+  }
+  .heroSection .container .image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.6;
+    width: 100%;
+    height: 100%;
+  }
+}
+@media (max-width: 950px) {
+  .heroSection .details {
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: space-evenly;
+  }
+  .heroSection .details .card {
+    width: 300px;
+    flex: none;
+  }
+}
+@media (max-width: 670px) {
+  .heroSection .details .card {
+    max-width: 350px;
+    min-width: 350px;
+  }
+}
+@media (max-width: 400px) {
+  .heroSection .details .card {
+    min-width: 100%;
+    max-width: 100%;
+  }
+}
+.howitworks {
+  background: #f1f3f6;
+}
+.howitworks .container {
+  max-width: 1500px;
+  min-width: 1500px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  align-items: center;
+  padding: 50px 0;
+  gap: 50px;
+}
+.howitworks .container .banner {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+}
+.howitworks .container .banner .card {
+  background: #fff;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: 350px;
+  padding: 30px 50px;
+  gap: 12px;
+  justify-content: center;
+}
+.howitworks .container .banner .card:nth-child(2) {
+  background: #18191c;
+  color: #fff;
+}
+.howitworks .container .banner .card svg {
+  font-size: 30px;
+  color: #b32456;
+}
+.howitworks .container .banner .card p:last-child {
+  font-size: 14px;
+  color: gray;
+}
+@media (max-width: 1520px) {
+  .howitworks .container {
+    min-width: 100%;
+    padding: 50px 20px;
+  }
+}
+@media (max-width: 850px) {
+  .howitworks .container .banner {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .howitworks .container .banner .card {
+    flex: none;
+    width: 400px;
+    height: 320px;
+  }
+}
+@media (max-width: 480px) {
+  .howitworks .container .banner .card {
+    width: 100%;
+  }
+}
+
+.categories {
+  min-width: 1500px;
+  max-width: 1500px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 50px 0;
+  gap: 35px;
+}
+.categories .banner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 35px;
+  padding: 20px 0;
+}
+.categories .banner .card {
+  width: 320px;
+  background: red;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f1f3f6;
+}
+.categories .banner .card:hover {
+  transition: all 0.3s;
+  box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+  -webkit-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+  -moz-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+}
+.categories .banner .card .icon {
+  font-size: 24px;
+  padding: 10px;
+  background: #f9b314;
+  color: #f9fcfb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.categories .banner .card .text p:nth-child(1) {
+  font-size: 16px;
+  font-weight: bold;
+  color: #b32456;
+}
+.categories .banner .card .text p:nth-child(2) {
+  font-size: 14px;
+  font-weight: 300;
+  color: gray;
+}
+@media (max-width: 1520px) {
+  .categories {
+    min-width: 100%;
+    padding: 50px 20px;
+  }
+}
+@media (max-width: 714px) {
+  .categories {
+    align-items: center;
+  }
+  .categories .banner {
+    justify-content: center;
+  }
+}
+@media (max-width: 350px) {
+  .categories .banner .card {
+    width: 100%;
+  }
+}
+
+.companies {
+  background: #f1f3f6;
+  padding: 50px 0;
+}
+.companies .container {
+  min-width: 1500px;
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 35px;
+}
+.companies .container .banner {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px 0;
+}
+.companies .container .banner .card {
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 20px;
+  gap: 15px;
+}
+.companies .container .banner .card:hover {
+  transition: all 0.3s;
+  box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+  -webkit-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+  -moz-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+}
+.companies .container .banner .card .content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.companies .container .banner .card .content .icon {
+  padding: 10px;
+  font-size: 24px;
+  color: #ffff;
+  background: #f9b314;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.companies .container .banner .card .content .text p:first-child {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.companies .container .banner .card .content .text p:last-child {
+  font-size: 15px;
+  color: gray;
+}
+.companies .container .banner .card button {
+  color: #b32456;
+  background: #f1f3f6;
+  font-weight: bold;
+  font-size: 20px;
+  border: none;
+  padding: 7px 0;
+  margin-top: 10px;
+}
+@media (max-width: 1520px) {
+  .companies .container {
+    min-width: 100%;
+    padding: 0 20px;
+  }
+}
+@media (max-width: 1100px) {
+  .companies .container .banner {
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+  }
+  .companies .container .banner .card {
+    width: 420px;
+  }
+}
+@media (max-width: 470px) {
+  .companies .container .banner .card {
+    width: 100%;
+  }
+}
+.jobs {
+  background: #f1f3f6;
+  min-height: 100vh;
+}
+.jobs .container .banner {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 25px;
+  justify-content: center;
+  padding: 10px 0;
+}
+.jobs .container .banner .card {
+  background: #fff;
+  text-decoration: none;
+  width: 290px;
+  height: 170px;
+  padding: 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+}
+
+.jobs .container .banner .card p:first-child {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #b32456;
+}
+.jobs .container .banner .card p:nth-child(2) {
+  font-size: 0.8rem;
+  color: gray;
+}
+.jobs .container .banner .card p:last-child {
+  font-size: 0.7rem;
+  color: gray;
+}
+.jobs .container .banner .card a {
+  text-decoration: none;
+  padding: 7px;
+  font-size: 20px;
+  color: #f1f3f6;
+  background: #f9b314;
+  width: 100%;
+  display: block;
+  text-align: center;
+}
+@media (max-width: 1520px) {
+  .jobs .container {
+    min-width: 100%;
+  }
+}
+@media (max-width: 1060px) {
+  .jobs .container .banner .card {
+    width: 360px;
+  }
+}
+@media (max-width: 795px) {
+  .jobs .container .banner .card {
+    width: 100%;
+  }
+}
+
+.jobs h3 {
+  text-align: center;
+  margin: 5px;
+}
+
+.jobs .card {
+  width: calc(
+    33.33% - 20px
+  ); /* Adjust card width based on the number of cards */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.jobs .card:hover {
+  transform: scale(1.05);
+}
+
+.jobs .card .content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.jobs .card .content .icon {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.jobs .card .content .profile-picture img {
+  width: 10px;
+  height: 40px;
+}
+
+.jobs .card .content .text {
+  flex-grow: 1;
+}
+
+.jobs .card .content .text p {
+  margin: 5px 0;
+}
+
+.jobs .card a {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.jobDetail {
+  background: #f1f3f6;
+  padding: 20px 20px;
+}
+.jobDetail .container {
+  max-width: 1500px;
+  min-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.jobDetail .container .banner {
+  width: 100%;
+  margin: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  justify-content: center;
+}
+.jobDetail .container .banner p {
+  font-weight: bold;
+  color: #2d5649;
+}
+.jobDetail .container .banner p span {
+  color: #18191c;
+  font-weight: 400;
+}
+.jobDetail .container .banner a {
+  background-color: #2d5649;
+  color: rgb(233, 249, 255);
+  font-size: 20px;
+  font-weight: 400;
+  border: none;
+  padding: 12px 30px;
+  text-decoration: none;
+  margin-top: 10px;
+  width: fit-content;
+}
+@media (max-width: 1520px) {
+  .jobDetail .container {
+    min-width: 100%;
+  }
+}

@@ -1,4 +1,5 @@
 // eslint-disable-next-line react/prop-types
+import "./Resumemodal.css";
 const ResumeModal = ({ imageUrl, onClose }) => {
   return (
     <>

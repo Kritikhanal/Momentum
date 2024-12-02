@@ -5,6 +5,7 @@ import { FaRegUser } from "react-icons/fa";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import "./Auth.css";
 
 import { Context } from "../../index";
 
@@ -26,6 +27,8 @@ const Login = () => {
           withCredentials: true,
         }
       );
+     
+
       toast.success(data.message);
       setEmail("");
       setPassword("");
@@ -37,7 +40,7 @@ const Login = () => {
   };
 
   if (isAuthorized) {
-    return <Navigate to={"/"} />;
+    return <Navigate to={"/user-dashboard"} />;
   }
   return (
     <>

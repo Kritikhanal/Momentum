@@ -1,5 +1,4 @@
 import "./App.css";
-import "./signup.css";
 import { useContext, useEffect } from "react";
 import { Context } from "./index";
 import { Routes, Route } from "react-router-dom";
@@ -19,9 +18,14 @@ import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import UserDashboard from "./components/UserDashboard/UserDashboard";
 import axios from "axios";
+import ResumeScorer from "./components/ResumeScorer/ResumeScorer.jsx";
+import ResumeForm from "./components/Resume-gen/ResumeForm.js";
+import ResumeView from "./components/Resume-gen/ResumeView/ResumeView.js";
+import EditResume from "./components/Resume-gen/EditResume.js";
+import MyResumes from "./components/Resume-gen/MyResume/MyResume.jsx";
 
 function App() {
-  const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
+  const { isAuthorized, setIsAuthorized, user, setUser } = useContext(Context);
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -45,17 +49,23 @@ function App() {
         <Navbar />
 
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/resume-scorer" element={<ResumeScorer />} />
           <Route path="/job/getall" element={<Jobs />} />
           <Route path="/job/:id" element={<JobDetails />} />
           <Route path="/application/:id" element={<Application />} />
           <Route path="/applications/me" element={<MyApplications />} />
           <Route path="/job/post" element={<PostJob />} />
           <Route path="/job/me" element={<MyJobs />} />
+          <Route path="/resume-builder" element={<ResumeForm />} />
+          <Route path="/resume/:id" element={<ResumeView user={user} />} />
+          <Route path="/edit-resume/:id" element={<EditResume />} />
+          <Route path="/my-resumes" element={<MyResumes user={user} />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="/" element={<UserDashboard />} />
+          <Route path="/user-dashboard" element={<UserDashboard />} />
+          
         </Routes>
         <Footer />
         <Toaster />

@@ -1,4 +1,5 @@
 import { FaBuilding, FaSuitcase, FaUsers, FaUserPlus } from "react-icons/fa";
+import "./Home.css";
 
 const HeroSection = () => {
   const details = [

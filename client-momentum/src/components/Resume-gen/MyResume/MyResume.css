@@ -1,0 +1,44 @@
+.my-resumes {
+  padding: 20px;
+}
+
+.resume-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.resume-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+}
+
+.resume-card:hover {
+  transform: translateY(-5px);
+}
+
+.resume-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.resume-card-header {
+  background-color: #f1f3f6;
+  padding: 15px;
+  text-align: center;
+}
+
+.resume-card-body {
+  padding: 15px;
+  text-align: center;
+}
+
+.resume-card-body p {
+  margin: 10px 0;
+  font-size: 14px;
+}

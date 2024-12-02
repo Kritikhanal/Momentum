@@ -2,8 +2,7 @@ import * as React from "react";
 import { CssVarsProvider } from "@mui/joy/styles";
 import CssBaseline from "@mui/joy/CssBaseline";
 import Box from "@mui/joy/Box";
-import Sidebar from "./Sidebar";
-import Header from "./Header";
+
 import MyProfile from "./Profile";
 import { useContext } from "react";
 import { Context } from "../../index";
@@ -19,13 +18,11 @@ export default function JoyOrderDashboardTemplate() {
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
       <Box sx={{ display: "flex", minHeight: "100dvh" }}>
-        <Sidebar />
-        <Header />
         <Box
           component="main"
           className="MainContent"
           sx={{
-            pt: { xs: "calc(12px + var(--Header-height))", md: 3 },
+            pt: { xs: "calc(12px + var(--Header-height))", md: 2 },
             pb: { xs: 2, sm: 2, md: 3 },
             flex: 1,
             display: "flex",
@@ -38,7 +35,6 @@ export default function JoyOrderDashboardTemplate() {
         >
           <MyProfile />
         </Box>
-        
       </Box>
     </CssVarsProvider>
   );
