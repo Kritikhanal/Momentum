@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoMdPaper } from "react-icons/io";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast"; // Importing toast and Toaster
 import "./ResumeScorer.css";
 
 const ResumeScorer = () => {
@@ -16,7 +17,7 @@ const ResumeScorer = () => {
     e.preventDefault();
 
     if (!resumeFile || !jobDescription) {
-      alert("Please provide both the job description and resume file.");
+      toast.error("Please provide both the job description and resume file.");
       return;
     }
 
@@ -35,11 +36,15 @@ const ResumeScorer = () => {
         }
       );
 
-      console.log("Upload Success:", response.data);
+      // Extract response details and show in the toast
+      const { success, message, resume, scoringResult } = response.data;
+
+      if (success) {
+        toast.success(`${message}\nScore: ${scoringResult.overallScore}`);
+      }
     } catch (error) {
-      console.error(
-        "Error uploading resume:",
-        error.response?.data || error.message
+      toast.error(
+        `Error uploading resume: ${error.response?.data || error.message}`
       );
     }
   };
@@ -82,6 +87,9 @@ const ResumeScorer = () => {
       <div className="banner">
         <img src="/5.jpeg" alt="resume scoring" />
       </div>
+
+      {/* Toaster for showing toast notifications */}
+      <Toaster position="top-center" />
     </section>
   );
 };

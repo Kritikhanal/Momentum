@@ -89,9 +89,8 @@ const ResumeForm = () => {
         {
           title: "",
 
-          duration: "",
           role: "",
-          skills: "",
+
           description: "",
         },
       ],
@@ -298,7 +297,7 @@ const ResumeForm = () => {
       {/*Project Section */}
       <div className="form-section">
         <h6>Project</h6>
-        {formData.project.map((edu, index) => (
+        {formData.project.map((pro, index) => (
           <div key={index} className="form-subsection">
             <input
               type="text"
@@ -319,12 +318,7 @@ const ResumeForm = () => {
               placeholder="Project Description"
               onChange={(e) => handleInputChange(e, "project", index)}
             />
-            <input
-              type="text"
-              name="duration"
-              placeholder="Duration"
-              onChange={(e) => handleInputChange(e, "project", index)}
-            />
+
             <button type="button" onClick={() => removeProject(index)}>
               Remove Project
             </button>

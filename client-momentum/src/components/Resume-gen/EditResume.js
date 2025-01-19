@@ -17,8 +17,9 @@ const EditResume = () => {
     careerObjective: "",
     education: [],
     experience: [],
+    project: [],
     skills: "",
-    certifications: "",
+    certification: [],
   });
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -101,6 +102,49 @@ const EditResume = () => {
     setFormData({ ...formData, experience: updatedExperience });
   };
 
+  const addcertification = () => {
+    setFormData({
+      ...formData,
+      certification: [
+        ...formData.certification,
+        {
+          name: "",
+
+          duration: "",
+
+          description: "",
+        },
+      ],
+    });
+  };
+
+  const removeCertification = (index) => {
+    const updatedCertification = formData.certification.filter(
+      (_, i) => i !== index
+    );
+    setFormData({ ...formData, certification: updatedCertification });
+  };
+  const addProject = () => {
+    setFormData({
+      ...formData,
+      project: [
+        ...formData.project,
+        {
+          title: "",
+
+          role: "",
+
+          description: "",
+        },
+      ],
+    });
+  };
+
+  const removeProject = (index) => {
+    const updatedProject = formData.project.filter((_, i) => i !== index);
+    setFormData({ ...formData, project: updatedProject });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -177,7 +221,6 @@ const EditResume = () => {
         />
       </div>
 
-      {/* Education Section */}
       <div className="form-section">
         <h3>Education</h3>
         {formData.education.map((edu, index) => (
@@ -231,6 +274,43 @@ const EditResume = () => {
         ))}
         <button type="button" onClick={addEducation}>
           Add Education
+        </button>
+      </div>
+      {/* project */}
+      <div className="form-section">
+        <h6>Project</h6>
+        {formData.project.map((pro, index) => (
+          <div key={index} className="form-subsection">
+            <input
+              type="text"
+              name="title"
+              placeholder="Project Title"
+              value={pro.title}
+              onChange={(e) => handleInputChange(e, "project", index)}
+              required
+            />
+
+            <input
+              type="text"
+              name="role"
+              placeholder="your role"
+              value={pro.role}
+              onChange={(e) => handleInputChange(e, "project", index)}
+            />
+            <textarea
+              name="description"
+              placeholder="Project Description"
+              value={pro.description}
+              onChange={(e) => handleInputChange(e, "project", index)}
+            />
+
+            <button type="button" onClick={() => removeProject(index)}>
+              Remove Project
+            </button>
+          </div>
+        ))}
+        <button type="button" onClick={addProject}>
+          Add Project
         </button>
       </div>
 
@@ -291,12 +371,43 @@ const EditResume = () => {
           value={formData.skills}
           onChange={(e) => handleInputChange(e, "skills")}
         />
-        <textarea
-          name="certifications"
-          placeholder="List your certifications here"
-          value={formData.certifications}
-          onChange={(e) => handleInputChange(e, "certifications")}
-        />
+      </div>
+
+      {/*Certficate Section */}
+      <div className="form-section">
+        <h6>Certifications</h6>
+        {formData.certification.map((cert, index) => (
+          <div key={index} className="form-subsection">
+            <input
+              type="text"
+              name="name"
+              placeholder="Certification Name"
+              value={cert.name}
+              onChange={(e) => handleInputChange(e, "certification", index)}
+            />
+
+            <input
+              type="text"
+              name="duration"
+              placeholder="Duration"
+              onChange={(e) => handleInputChange(e, "certification", index)}
+              value={cert.duration}
+            />
+            <textarea
+              name="description"
+              placeholder=" Description"
+              onChange={(e) => handleInputChange(e, "certification", index)}
+              value={cert.description}
+            />
+
+            <button type="button" onClick={() => removeCertification(index)}>
+              Remove Certification
+            </button>
+          </div>
+        ))}
+        <button type="button" onClick={addcertification}>
+          Add Certifications
+        </button>
       </div>
 
       <button type="submit">Save Changes</button>

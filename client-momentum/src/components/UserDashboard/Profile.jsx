@@ -33,6 +33,7 @@ import {
   Close as CloseIcon, // Import the Close icon
 } from "@mui/icons-material";
 import Application from "../Application/MyApplications";
+import MyResumes from "../Resume-gen/MyResume/MyResume";
 
 export default function MyProfile() {
   const { isAuthorized, user } = useContext(Context);
@@ -220,6 +221,7 @@ export default function MyProfile() {
             </TabList>
           </Tabs>
           {activeTab === 1 && <Application />}
+          {activeTab === 3 && <MyResumes />}
         </Box>
       </Box>
 

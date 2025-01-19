@@ -3,7 +3,23 @@ import { Job } from "../models/jobSchema.js";
 import ErrorHandler from "../middlewares/error.js";
 
 export const getAllJobs = catchAsyncErrors(async (req, res, next) => {
-  const jobs = await Job.find({ expired: false });
+  const { title, location } = req.query; 
+  const query = { expired: false };
+
+  // Add title to the query if provided
+  if (title) {
+    query.title = { $regex: title, $options: "i" }; 
+  }
+
+  if (location) {
+    query.location = location; 
+  }
+
+
+  const jobs = await Job.find(query)
+    .populate("postedBy", "name profilePicture") // Populate name and profilePicture from the User model
+    .exec();
+
   res.status(200).json({
     success: true,
     jobs,
@@ -20,6 +36,8 @@ export const postJob = catchAsyncErrors(async (req, res, next) => {
   const {
     title,
     description,
+    companyName,
+    companyDescription,
     category,
     country,
     city,
@@ -29,7 +47,16 @@ export const postJob = catchAsyncErrors(async (req, res, next) => {
     salaryTo,
   } = req.body;
 
-  if (!title || !description || !category || !country || !city || !location) {
+  if (
+    !title ||
+    !description ||
+    !category ||
+    !country ||
+    !city ||
+    !location ||
+    !companyName ||
+    !companyDescription
+  ) {
     return next(new ErrorHandler("Please provide full job details.", 400));
   }
 
@@ -49,6 +76,8 @@ export const postJob = catchAsyncErrors(async (req, res, next) => {
   }
   const postedBy = req.user._id;
   const job = await Job.create({
+    companyName,
+    companyDescription,
     title,
     description,
     category,

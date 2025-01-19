@@ -98,7 +98,7 @@ const SignUp = () => {
               </section>
               <input
                 className="phoneinput"
-                type="number"
+                type="tel"
                 placeholder="1234567890"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}

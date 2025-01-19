@@ -10,7 +10,8 @@ import "./Navbar.css";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState(""); // Add state for search keyword
+  const [searchKeyword, setSearchKeyword] = useState("");
+
   const { isAuthorized, setIsAuthorized, user, setUser } = useContext(Context);
   const navigate = useNavigate();
 
@@ -68,12 +69,27 @@ const Navbar = () => {
     }
   };
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    // Perform search logic here using the searchKeyword state
-    console.log("Search keyword:", searchKeyword); // Debug log
-    // Reset search keyword
-    setSearchKeyword("");
+    if (!searchKeyword.trim()) return;
+
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/v1/job?title=${searchKeyword.trim()}`,
+        { withCredentials: true }
+      );
+      const searchResults = response.data.jobs;
+
+      console.log("Search Results:", searchResults);
+
+      navigate("/search-results", { state: { searchResults } });
+
+      // Clear the search bar after the search is executed
+      setSearchKeyword("");
+    } catch (error) {
+      console.error("Search Error:", error);
+      toast.error("Failed to fetch search results.");
+    }
   };
 
   return (
@@ -149,6 +165,7 @@ const Navbar = () => {
                   onChange={(e) => setSearchKeyword(e.target.value)}
                   placeholder="Search jobs..."
                 />
+
                 <button id="search-button" type="submit">
                   Search
                 </button>

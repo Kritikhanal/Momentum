@@ -15,8 +15,20 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, "Please provide a valid Email!"],
   },
   phone: {
-    type: Number,
+    type: String,
     required: [true, "Please enter your Phone Number!"],
+    validate: [validator.isMobilePhone, "Please provide a valid phone number!"],
+    maxLength: [10, "Phone number cannot exceed 10 Characters!"],
+  },
+
+  bio: {
+    type: String,
+  },
+  companyValues: {
+    type: String,
+  },
+  companyAchievements: {
+    type: String,
   },
   password: {
     type: String,
@@ -30,10 +42,19 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please select a role"],
     enum: ["Job Seeker", "Employer"],
   },
+  profilePicture: {
+    public_id: {
+      type: String,
+    },
+    url: {
+      type: String,
+    },
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
+  savedResumes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Resumes" }],
 });
 
 //ENCRYPTING THE PASSWORD WHEN THE USER REGISTERS OR MODIFIES HIS PASSWORD

@@ -124,6 +124,23 @@ const ResumeView = ({ user }) => {
           )}
         </div>
         <div className="resume-section">
+          <h2>Project</h2>
+          {resumeData.project && resumeData.project.length > 0 ? (
+            resumeData.project.map((project, index) => (
+              <div key={index}>
+                <h3>
+                  {project.title || "Title not provided"}
+                  {project.role || "role not provided"}
+                </h3>
+
+                <p>{project.description || "No description provided."}</p>
+              </div>
+            ))
+          ) : (
+            <p>No experience information provided.</p>
+          )}
+        </div>
+        <div className="resume-section">
           <h2>Experience</h2>
           {resumeData.experience && resumeData.experience.length > 0 ? (
             resumeData.experience.map((exp, index) => (
@@ -147,14 +164,34 @@ const ResumeView = ({ user }) => {
         </div>
         <div className="resume-section">
           <h2>Certifications</h2>
-          <p>{resumeData.certifications || "No certifications listed."}</p>
+          {resumeData.certification && resumeData.certification.length > 0 ? (
+            resumeData.certification.map((cert, index) => (
+              <div key={index}>
+                <h3>
+                  {cert.name || "Title not provided"} at{" "}
+                  {cert.duration || "Company not provided"}
+                </h3>
+
+                <p>{cert.description || "No description provided."}</p>
+              </div>
+            ))
+          ) : (
+            <p>No experience information provided.</p>
+          )}
         </div>
-        <button onClick={() => navigate(`/edit-resume/${id}`)}>
+        <button
+          class="Editbutton"
+          onClick={() => navigate(`/edit-resume/${id}`)}
+        >
           Edit Resume
         </button>
-        <button onClick={handleDownload}>Download Resume</button>
+        <button class="Editbutton" onClick={handleDownload}>
+          Download Resume
+        </button>
         {!isSaved && user && (
-          <button onClick={handleSavedResume}>Save to My Profile</button>
+          <button class="Editbutton" onClick={handleSavedResume}>
+            Save to My Profile
+          </button>
         )}
       </div>
     </div>

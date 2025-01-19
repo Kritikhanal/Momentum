@@ -1,12 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import { Context } from "../../index";
+import { Link} from "react-router-dom";
+
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
-  const { isAuthorized } = useContext(Context);
-  const navigateTo = useNavigate();
+ 
 
   // Fetch jobs from the backend API
   useEffect(() => {
@@ -23,11 +22,6 @@ const Jobs = () => {
       console.log(error);
     }
   }, []);
-
-  // Redirect if the user is not authorized
-  if (!isAuthorized) {
-    navigateTo("/"); // Redirect to homepage if not authorized
-  }
 
   return (
     <section className="jobs page ">

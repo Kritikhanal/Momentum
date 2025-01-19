@@ -23,6 +23,7 @@ import ResumeForm from "./components/Resume-gen/ResumeForm.js";
 import ResumeView from "./components/Resume-gen/ResumeView/ResumeView.js";
 import EditResume from "./components/Resume-gen/EditResume.js";
 import MyResumes from "./components/Resume-gen/MyResume/MyResume.jsx";
+import SearchResults from "./components/Layout/SearchResults.jsx";
 
 function App() {
   const { isAuthorized, setIsAuthorized, user, setUser } = useContext(Context);
@@ -62,10 +63,11 @@ function App() {
           <Route path="/resume-builder" element={<ResumeForm />} />
           <Route path="/resume/:id" element={<ResumeView user={user} />} />
           <Route path="/edit-resume/:id" element={<EditResume />} />
+          <Route path="/search-results" element={<SearchResults />} />
           <Route path="/my-resumes" element={<MyResumes user={user} />} />
           <Route path="*" element={<NotFound />} />
+
           <Route path="/user-dashboard" element={<UserDashboard />} />
-          
         </Routes>
         <Footer />
         <Toaster />
